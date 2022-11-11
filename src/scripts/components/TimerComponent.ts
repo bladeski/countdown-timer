@@ -87,7 +87,6 @@ export default class TimerComponent {
     startStopButton?.classList.add('timer-started');
 
     document.body.classList.add('countdown');
-  console.time('timer')
     this.interval = setInterval(() => {
       this.updateTimer();
     }, 50);
@@ -96,7 +95,6 @@ export default class TimerComponent {
   public stopTimer() {
     if (this.interval) {
       clearInterval(this.interval);
-      console.timeEnd('timer')
       this.interval = undefined;
 
       const startStopButton = document.getElementById('StartStop');
