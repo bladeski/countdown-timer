@@ -10,7 +10,7 @@
     "clean:dist": "rimraf dist",
     "clean:dist-serve": "rimraf dist-serve",
     "start": "npm run clean:dist-serve && parcel serve src/index.pug src/robots.txt --dist-dir dist-serve --port 1236",
-    "build": "npm run clean:dist && parcel build src/index.pug src/robots.txt --no-source-maps --public-url /b-links",
+    "build": "npm run clean:dist && parcel build src/index.pug src/robots.txt --no-source-maps --public-url /countdown-timer",
     "test": "jest"
   },
   "browserslist": "defaults and supports es6-module",
