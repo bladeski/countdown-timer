@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "importHelpers": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "module": "ES6",
+    "sourceMap": true,
+    "outDir": "./dist/",
+    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "target": "ES6"
+  },
+  "include": ["src/**/*"],
+}

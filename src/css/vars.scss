@@ -1,0 +1,38 @@
+$border-width: 2px;
+$border-radius: 6px;
+$padding-small: 0.5rem;
+$padding-standard: 1rem;
+$padding-large: 2rem;
+$padding-page-width: 5vw;
+
+// Fonts
+$body-font-size: 28px;
+$font-size-regular: 1rem;
+$font-size-l: 1.5rem;
+$font-size-xl: 2.25rem;
+$font-size-xxl: 3.375rem;
+$font-size-xxxl: 5.063rem;
+$font-size-xxxxl: 7.594rem;
+$font-size-s: 0.667rem;
+$font-family: 'Raleway', sans-serif;
+$timer-font-family: 'Bungee', sans-serif;
+
+// Colours
+$theme-colour: hsl(230, 71%, 24%);
+$primary-font-colour: darken($theme-colour, 8%);
+$link-colour: lighten($theme-colour, 20%);
+$link-visited-colour: lighten($theme-colour, 10%);
+$background-colour: lighten($theme-colour, 74%);
+$secondary-background-colour: lighten($theme-colour, 70%);
+$tooltip-colour: darken($theme-colour,16%);
+$info-colour: hsl(214, 60%, 30%);
+$info-colour-background: lighten($info-colour, 40%);
+$success-colour: hsl(98, 60%, 30%);
+$success-colour-background: lighten($success-colour, 40%);
+$warning-colour: hsl(34, 60%, 30%);
+$warning-colour-background: lighten($warning-colour, 40%);
+$danger-colour: hsl(355, 60%, 30%);
+$danger-colour-background: lighten($danger-colour, 40%);
+
+// Transitions
+$default-transition: 250ms ease-in-out;

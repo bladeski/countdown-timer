@@ -1,0 +1,36 @@
+doctype html
+html(lang="en-GB")
+  head
+    include templates/head.pug
+  main
+    button#SettingsButton.material-symbols-rounded
+      span.settings settings
+    div#Timer.hours.minutes.seconds
+      span#Hours1.hour-value
+      span#Hours2.hour-value
+      span.hour-divider :
+      span#Minutes1.minute-value
+      span#Minutes2.minute-value
+      span.minute-divider :
+      span#Seconds1.second-value
+      span#Seconds2.second-value
+    button#StartStop.timer-stopped.material-symbols-rounded
+      span.play play_circle
+      span.pause pause_circle
+    form#Settings
+      div Countdown Timer Length 
+      div.timer-values
+        input.timer-input-value(data-index="0" placeholder="h" type="number" min="0" max="9" required)
+        input.timer-input-value(data-index="1" placeholder="h" type="number" min="0" max="9" required)
+        span :
+        input.timer-input-value(data-index="2" placeholder="m" type="number" min="0" max="5" required)
+        input.timer-input-value(data-index="3" placeholder="m" type="number" min="0" max="9" required)
+        span :
+        input.timer-input-value(data-index="4" placeholder="s" type="number" min="0" max="5" required)
+        input.timer-input-value(data-index="5" placeholder="s" type="number" min="0" max="9" required)
+      label Hide 'zeroed' units?
+        input(name="hideZeroedUnits" type="checkbox" checked)
+      button#UpdateButton(type=submit aria-disabled="true").material-symbols-rounded
+        span.update check
+    
+  script(src="./scripts/index.ts" type="module")

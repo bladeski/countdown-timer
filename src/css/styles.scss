@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&family=Raleway:ital@0;1&display=swap');
+
+@import './vars.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  font-size: $body-font-size;
+}
+
+body,
+input,
+button,
+select {
+  color: $primary-font-colour;
+  font-family: $font-family;
+  font-size: $body-font-size;
+  font-weight: 400;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+
+  background-color: $background-colour;
+
+  line-height: 1.5;
+  text-align: justify;
+}
+
+h1 {
+  font-size: $font-size-xxl;
+  font-weight: 900;
+}
+
+h2 {
+  font-size: $font-size-xl;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: $font-size-l;
+}
+
+a,
+input,
+textarea,
+button,
+select,
+label {
+  cursor: pointer;
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
+}
+
+label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  white-space: nowrap;
+
+  gap: $padding-small;
+}
+
+input,
+textarea,
+select {
+  margin: 0;
+
+  border: 1px solid $primary-font-colour;
+  border-radius: $border-radius;
+}
+
+input {
+  &[type='checkbox'] {
+    width: 1rem;
+    height: 1rem;
+    margin: 0.25rem;
+  }
+}
+
+select {
+  padding: $padding-small $padding-standard;
+}
+
+button {
+  border: none;
+
+  background-color: transparent;
+
+  &#StartStop,
+  &#SettingsButton,
+  &#UpdateButton {
+    font-size: $font-size-xxl;
+
+    opacity: 0.2;
+    transition: opacity $default-transition;
+
+    &:hover,
+    &:active,
+    &:focus {
+      &:not(:disabled):not([aria-disabled='true']) {
+        opacity: 1;
+      }
+    }
+
+    &.timer-started {
+      .play {
+        display: none;
+      }
+    }
+
+    &.timer-stopped {
+      .pause {
+        display: none;
+      }
+    }
+  }
+
+  &#SettingsButton {
+    position: absolute;
+    top: $padding-standard;
+    right: $padding-standard;
+
+    font-size: $font-size-xl;
+
+    z-index: 1;
+  }
+}
+
+main {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+#Timer {
+  display: grid;
+  grid-template-columns: 1fr 1fr repeat(2, auto 1fr 1fr);
+  align-items: baseline;
+
+  font-family: $timer-font-family;
+  font-size: $font-size-xl;
+
+  transition: font-size $default-transition;
+
+  &.seconds {
+    font-size: $font-size-xxxxl;
+
+    .second-value {
+      opacity: 1;
+    }
+  }
+
+  &.minutes {
+    font-size: $font-size-xxxl;
+
+    .minute-value,
+    .minute-divider {
+      opacity: 1;
+    }
+  }
+
+  &.hours {
+    font-size: $font-size-xxl;
+
+    .hour-value,
+    .hour-divider {
+      opacity: 1;
+    }
+  }
+
+  &.hide-hours {
+    grid-template-columns: 1fr 1fr auto 1fr 1fr;
+
+    .hour-value,
+    .hour-divider {
+      display: none;
+    }
+  }
+
+  &.hide-minutes {
+    grid-template-columns: 1fr 1fr auto;
+
+    .minute-value,
+    .minute-divider {
+      display: none;
+    }
+  }
+
+  .hour-value,
+  .minute-value,
+  .second-value,
+  .hour-divider,
+  .minute-divider {
+    opacity: 0.5;
+    transition: opacity $default-transition;
+  }
+
+  #Hours1,
+  #Minutes1,
+  #Seconds1 {
+    text-align: right;
+  }
+
+  #Hours2,
+  #Minutes2,
+  #Seconds2 {
+    text-align: left;
+  }
+}
+
+#Settings {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $background-colour;
+
+  gap: $padding-standard;
+
+  &:valid {
+    #UpdateButton {
+      opacity: 1;
+    }
+  }
+
+  &.show {
+    display: flex;
+  }
+
+  label {
+    display: flex;
+  }
+
+  .timer-values {
+    display: flex;
+
+    gap: $padding-small;
+
+    input,
+    span {
+      font-family: $timer-font-family;
+      font-size: $font-size-xl;
+      text-align: center;
+    }
+
+    input {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: $font-size-xxl;
+      height: $font-size-xxl;
+      padding-left: $padding-small;
+    }
+  }
+
+  #UpdateButton {
+    color: $success-colour;
+  }
+}
+
+@media screen and (min-width: 640px) {
+  $padding-page-width: 10vw;
+
+  header,
+  nav,
+  main,
+  footer .content,
+  #Preferences {
+    padding: $padding-small $padding-page-width;
+  }
+
+  h1,
+  h2,
+  h3 {
+    flex-direction: row;
+  }
+
+  .tag {
+    text-align: left;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  $padding-page-width: 20vw;
+
+  header,
+  nav,
+  main,
+  footer .content,
+  #Preferences {
+    padding: $padding-small $padding-page-width;
+  }
+}
