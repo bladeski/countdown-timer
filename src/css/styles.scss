@@ -34,6 +34,18 @@ body {
 
   line-height: 1.5;
   text-align: justify;
+
+  &.countdown {
+    background-color: $primary-font-colour;
+
+    color: $background-colour;
+
+    input,
+    button,
+    select {
+      color: $background-colour;
+    }
+  }
 }
 
 h1 {

@@ -5,17 +5,15 @@ export default class SettingsComponent {
   private showSettings = false;
   private form: HTMLFormElement;
   private inputs: HTMLInputElement[] = [];
-  private timer: TimerComponent = new TimerComponent();
+  private timer: TimerComponent;
 
   constructor() {
-    this.timer.setTimer(0,0,0, false);
-
     this.settingsButton = document.getElementById('SettingsButton') as HTMLButtonElement;
-    this.settingsButton.addEventListener('click', this.toggleSettings.bind(this));
+    this.settingsButton.addEventListener('click', () => this.toggleSettings());
 
     this.form = document.forms.namedItem('Settings') as HTMLFormElement;
 
-    this.form.querySelectorAll('input.timer-input-value').forEach((input) => this.inputs.push(input));
+    this.form.querySelectorAll('input.timer-input-value').forEach((input) => this.inputs.push(input as HTMLInputElement));
 
     this.inputs.forEach((input) => {
       input.addEventListener('keyup', this.onInputUpdate.bind(this));
@@ -31,10 +29,11 @@ export default class SettingsComponent {
       }
     });
     this.form.addEventListener('submit', this.onFormSubmit.bind(this));
+    this.timer = new TimerComponent(this.toggleSettings.bind(this));
   }
 
-  private toggleSettings() {
-    this.showSettings = !this.showSettings;
+  private toggleSettings(open?: boolean) {
+    this.showSettings = typeof open === 'boolean' ? open : !this.showSettings;
 
     const settingsPanel = document.getElementById('Settings');
     if (this.showSettings) {

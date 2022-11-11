@@ -1,16 +1,19 @@
+import confetti from 'canvas-confetti';
+
 export default class TimerComponent {
   private element: HTMLElement;
   private startStopButton: HTMLButtonElement;
   private endTime?: Date;
   private interval?: NodeJS.Timeout;
-  private hoursLeft: number = -1;
-  private minutesLeft: number = -1;
-  private secondsLeft: number = -1;
-  private showHours = true;
-  private showMinutes = true;
+  private hoursLeft: number = 0;
+  private minutesLeft: number = 0;
+  private secondsLeft: number = 0;
   private hideZeroedUnits = false;
+  private openSettings: (open?: boolean) => void;
 
-  constructor() {
+  constructor(openSettings: (open?: boolean) => void) {
+    this.openSettings = openSettings;
+
     const element = document.getElementById('Timer');
 
     if (element) {
@@ -27,6 +30,8 @@ export default class TimerComponent {
     } else {
       this.startStopButton = document.createElement('button');
     }
+
+    this.reset();
 
     this.startStopButton.addEventListener('click', () => {
       if (this.interval) {
@@ -53,8 +58,6 @@ export default class TimerComponent {
       throw new Error('Hours, minutes and seconds need to be a valid number');
     }
     this.hideZeroedUnits = hideZeroedUnits;
-    this.showHours = !hideZeroedUnits;
-    this.showMinutes = !hideZeroedUnits;
 
     const timerInMs =
       hours * TimeInMs.HOURS +
@@ -80,6 +83,8 @@ export default class TimerComponent {
       const startStopButton = document.getElementById('StartStop');
       startStopButton?.classList.remove('timer-stopped');
       startStopButton?.classList.add('timer-started');
+
+      document.body.classList.add('countdown');
       
       this.interval = setInterval(() => {
         this.updateTimer();
@@ -99,28 +104,52 @@ export default class TimerComponent {
     }
   }
 
+  public reset() {
+    this.stopTimer();
+    this.endTime = undefined;
+    this.hoursLeft = 0;
+    this.minutesLeft = 0;
+    this.secondsLeft = 0;
+    this.setTimer(0, 0, 0, false);
+    this.openSettings(true);
+  }
+
   private updateTimer() {
     if (this.endTime) {
-      const { hours, minutes, seconds } = this.getRemainingTime(this.endTime);
+      const { hours, minutes, seconds, ms } = this.getRemainingTime(this.endTime);
 
-      if (hours !== this.hoursLeft) {
+      console.log(ms);
+      
+
+      if (!this.interval || hours !== this.hoursLeft) {
         this.hoursLeft = hours;
         this.setTimeUnitValue(this.hoursLeft, TimeUnit.HOURS);
       }
 
-      if (minutes !== this.minutesLeft) {
+      if (!this.interval || minutes !== this.minutesLeft) {
         this.minutesLeft = minutes;
         this.setTimeUnitValue(this.minutesLeft, TimeUnit.MINUTES);
       }
 
-      if (seconds !== this.secondsLeft) {
+      if (!this.interval || seconds !== this.secondsLeft) {
         this.secondsLeft = seconds;
         this.setTimeUnitValue(this.secondsLeft, TimeUnit.SECONDS);
+        console.log('change', ms)
       }
       this.setClass();
       
 
       if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+        this.interval && confetti({
+          particleCount: 100,
+          spread: 120,
+          shapes: ['circle', 'circle', 'square'],
+          gravity: 0.8,
+          ticks: 250
+        })?.then(() => {
+          document.body.classList.remove('countdown');
+          this.reset();
+        });
         this.stopTimer();
         this.startStopButton.disabled = true;
       } else {
@@ -135,11 +164,13 @@ export default class TimerComponent {
     const hours = Math.floor(timeLeft / TimeInMs.HOURS);
     const minutes = Math.floor(timeLeft / TimeInMs.MINUTES) % 60;
     const seconds = Math.floor(timeLeft / TimeInMs.SECONDS) % 60;
+    const ms = timeLeft % 1000;
 
     return {
       hours,
       minutes,
-      seconds
+      seconds,
+      ms
     };
   }
 
@@ -164,17 +195,19 @@ export default class TimerComponent {
   }
 
   private setClass() {
-    if (!this.showHours && this.hoursLeft <= 0) {
-      this.element.classList.add('hide-hours');
-    }
-
-    if (!this.showMinutes && this.minutesLeft <= 0 && this.hoursLeft <= 0) {
-      this.element.classList.add('hide-minutes');
-    }
-
+    this.element.classList.remove('hide-hours');
+    this.element.classList.remove('hide-minutes');
     this.element.classList.add('hours');
     this.element.classList.add('minutes');
     this.element.classList.add('seconds');
+
+    if (this.hideZeroedUnits && this.hoursLeft <= 0) {
+      this.element.classList.add('hide-hours');
+
+      if (this.minutesLeft <= 0) {
+        this.element.classList.add('hide-minutes');        
+      }
+    }
 
     if (this.hoursLeft === 0) {
       this.element.classList.remove('hours');
