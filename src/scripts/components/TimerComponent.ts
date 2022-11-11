@@ -52,50 +52,51 @@ export default class TimerComponent {
   public setTimer(hours: number, minutes: number = 0, seconds: number = 0, hideZeroedUnits = false) {
     if (
       typeof hours !== 'number' ||
-      typeof hours !== 'number' ||
-      typeof hours !== 'number'
+      typeof minutes !== 'number' ||
+      typeof seconds !== 'number'
     ) {
       throw new Error('Hours, minutes and seconds need to be a valid number');
     }
     this.hideZeroedUnits = hideZeroedUnits;
 
-    const timerInMs =
-      hours * TimeInMs.HOURS +
-      minutes * TimeInMs.MINUTES +
-      seconds * TimeInMs.SECONDS;
-    this.endTime = new Date();
-    this.endTime.setTime(this.endTime.getTime() + timerInMs);
-    this.updateTimer();
+    this.hoursLeft = hours;
+    this.minutesLeft = minutes;
+    this.secondsLeft = seconds;
+    
+    this.setTimeUnitValue(this.hoursLeft, TimeUnit.HOURS);
+    this.setTimeUnitValue(this.minutesLeft, TimeUnit.MINUTES);
+    this.setTimeUnitValue(this.secondsLeft, TimeUnit.SECONDS);
+    
+    this.setStartStopButtonDisabled();
+    this.setClass();
   }
 
   public startTimer() {
-    if (this.endTime) {
-      const { hours, minutes, seconds } = this.getRemainingTime(this.endTime);
-      this.hoursLeft = hours;
-      this.minutesLeft = minutes;
-      this.secondsLeft = seconds;
+    const timerInMs =
+      this.hoursLeft * TimeInMs.HOURS +
+      this.minutesLeft * TimeInMs.MINUTES +
+      this.secondsLeft * TimeInMs.SECONDS;
+    
+    this.endTime = new Date();
+    this.endTime.setTime(this.endTime.getTime() + timerInMs + TimeInMs.SECONDS);
 
-      // this.showHours = hours > 0;
-      // this.showMinutes = hours > 0 || minutes > 0;
+    this.setTimeValue();
 
-      this.setTimeValue();
+    const startStopButton = document.getElementById('StartStop');
+    startStopButton?.classList.remove('timer-stopped');
+    startStopButton?.classList.add('timer-started');
 
-      const startStopButton = document.getElementById('StartStop');
-      startStopButton?.classList.remove('timer-stopped');
-      startStopButton?.classList.add('timer-started');
-
-      document.body.classList.add('countdown');
-      
-      this.interval = setInterval(() => {
-        this.updateTimer();
-      }, 100);
-
-    }
+    document.body.classList.add('countdown');
+  console.time('timer')
+    this.interval = setInterval(() => {
+      this.updateTimer();
+    }, 50);
   }
 
   public stopTimer() {
     if (this.interval) {
       clearInterval(this.interval);
+      console.timeEnd('timer')
       this.interval = undefined;
 
       const startStopButton = document.getElementById('StartStop');
@@ -116,25 +117,21 @@ export default class TimerComponent {
 
   private updateTimer() {
     if (this.endTime) {
-      const { hours, minutes, seconds, ms } = this.getRemainingTime(this.endTime);
-
-      console.log(ms);
+      const { hours, minutes, seconds } = this.getRemainingTime(this.endTime);
       
-
-      if (!this.interval || hours !== this.hoursLeft) {
+      if (hours !== this.hoursLeft) {
         this.hoursLeft = hours;
         this.setTimeUnitValue(this.hoursLeft, TimeUnit.HOURS);
       }
 
-      if (!this.interval || minutes !== this.minutesLeft) {
+      if (minutes !== this.minutesLeft) {
         this.minutesLeft = minutes;
         this.setTimeUnitValue(this.minutesLeft, TimeUnit.MINUTES);
       }
 
-      if (!this.interval || seconds !== this.secondsLeft) {
+      if (seconds !== this.secondsLeft) {
         this.secondsLeft = seconds;
         this.setTimeUnitValue(this.secondsLeft, TimeUnit.SECONDS);
-        console.log('change', ms)
       }
       this.setClass();
       
@@ -151,10 +148,9 @@ export default class TimerComponent {
           this.reset();
         });
         this.stopTimer();
-        this.startStopButton.disabled = true;
-      } else {
-        this.startStopButton.disabled = false;
       }
+
+      this.setStartStopButtonDisabled();
     }
   }
 
@@ -164,14 +160,18 @@ export default class TimerComponent {
     const hours = Math.floor(timeLeft / TimeInMs.HOURS);
     const minutes = Math.floor(timeLeft / TimeInMs.MINUTES) % 60;
     const seconds = Math.floor(timeLeft / TimeInMs.SECONDS) % 60;
-    const ms = timeLeft % 1000;
 
     return {
       hours,
       minutes,
-      seconds,
-      ms
+      seconds
     };
+  }
+
+  private setStartStopButtonDisabled() {
+    const isDisabled = this.hoursLeft <= 0 && this.minutesLeft <= 0 && this.secondsLeft <= 0;
+    this.startStopButton.disabled = isDisabled;
+    this.startStopButton.ariaDisabled = `${isDisabled}`;
   }
 
   private setTimeValue() {
