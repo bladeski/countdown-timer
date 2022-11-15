@@ -133,14 +133,18 @@ export default class TimerComponent {
       }
       this.setClass();
       
+      if (hours <= 0 && minutes <= 0 && seconds <= 10) {
+        document.body.classList.add('pulse');
+      }
 
       if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+        document.body.classList.remove('pulse');
         this.interval && confetti({
           particleCount: 100,
-          spread: 120,
+          spread: 160,
           shapes: ['circle', 'circle', 'square'],
-          gravity: 0.8,
-          ticks: 250
+          gravity: 0.5,
+          ticks: 300
         })?.then(() => {
           document.body.classList.remove('countdown');
           this.reset();

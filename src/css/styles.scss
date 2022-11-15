@@ -46,6 +46,12 @@ body {
       color: $background-colour;
     }
   }
+
+  &.pulse {
+    main {
+      animation: pulse-animation 1s infinite;
+    }
+  }
 }
 
 h1 {
@@ -162,6 +168,7 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin: $padding-standard;
   overflow: auto;
 }
 
@@ -328,5 +335,15 @@ main {
   footer .content,
   #Preferences {
     padding: $padding-small $padding-page-width;
+  }
+}
+
+@keyframes pulse-animation {
+  0% {
+    box-shadow: inset 0 0 10px 10px $theme-colour;
+  }
+
+  100% {
+    box-shadow: inset 0 0 10px 10px transparentize($color: $theme-colour, $amount: 1);
   }
 }

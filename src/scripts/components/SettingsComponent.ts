@@ -8,19 +8,25 @@ export default class SettingsComponent {
   private timer: TimerComponent;
 
   constructor() {
-    this.settingsButton = document.getElementById('SettingsButton') as HTMLButtonElement;
+    this.settingsButton = document.getElementById(
+      'SettingsButton'
+    ) as HTMLButtonElement;
     this.settingsButton.addEventListener('click', () => this.toggleSettings());
 
     this.form = document.forms.namedItem('Settings') as HTMLFormElement;
 
-    this.form.querySelectorAll('input.timer-input-value').forEach((input) => this.inputs.push(input as HTMLInputElement));
+    this.form
+      .querySelectorAll('input.timer-input-value')
+      .forEach((input) => this.inputs.push(input as HTMLInputElement));
 
     this.inputs.forEach((input) => {
       input.addEventListener('input', this.onInputUpdate.bind(this));
     });
 
     this.form.addEventListener('input', (event: Event) => {
-      const updateButton = document.getElementById('UpdateButton') as HTMLButtonElement;
+      const updateButton = document.getElementById(
+        'UpdateButton'
+      ) as HTMLButtonElement;
 
       if (this.form.checkValidity()) {
         updateButton.ariaDisabled = 'false';
@@ -41,18 +47,24 @@ export default class SettingsComponent {
       this.inputs[0].focus();
     } else {
       settingsPanel?.classList.remove('show');
-      const startStopButton = document.getElementById('StartStop') as HTMLButtonElement;
+      const startStopButton = document.getElementById(
+        'StartStop'
+      ) as HTMLButtonElement;
       startStopButton.focus();
     }
   }
 
   private onInputUpdate(event: Event) {
-    const target = (event.target as HTMLInputElement);
-    const value = parseInt(target.value);
-    
-    if (value < 10) {
-      target.value = `0${value}`;
-    }
+    const target = event.target as HTMLInputElement;
+    const enteredValue = parseInt(target.value);
+    const value =
+      enteredValue > parseInt(target.max)
+        ? target.max
+        : enteredValue < parseInt(target.min)
+        ? target.min
+        : enteredValue;
+
+    target.value = `${value < 10 ? '0' : ''}${value}`;
   }
 
   private onFormSubmit(event: SubmitEvent) {
@@ -64,9 +76,16 @@ export default class SettingsComponent {
       const hours = this.inputs[0].value;
       const minutes = this.inputs[1].value;
       const seconds = this.inputs[2].value;
-      const hideZeroedUnits = this.form.querySelector('[name="hideZeroedUnits"') as HTMLInputElement;
+      const hideZeroedUnits = this.form.querySelector(
+        '[name="hideZeroedUnits"'
+      ) as HTMLInputElement;
 
-      this.timer.setTimer(parseInt(hours), parseInt(minutes), parseInt(seconds), hideZeroedUnits.checked);
+      this.timer.setTimer(
+        parseInt(hours),
+        parseInt(minutes),
+        parseInt(seconds),
+        hideZeroedUnits.checked
+      );
 
       this.toggleSettings();
     }
