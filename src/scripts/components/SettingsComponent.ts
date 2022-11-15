@@ -16,7 +16,7 @@ export default class SettingsComponent {
     this.form.querySelectorAll('input.timer-input-value').forEach((input) => this.inputs.push(input as HTMLInputElement));
 
     this.inputs.forEach((input) => {
-      input.addEventListener('keyup', this.onInputUpdate.bind(this));
+      input.addEventListener('input', this.onInputUpdate.bind(this));
     });
 
     this.form.addEventListener('input', (event: Event) => {
@@ -46,14 +46,12 @@ export default class SettingsComponent {
     }
   }
 
-  private onInputUpdate(event: KeyboardEvent) {
+  private onInputUpdate(event: Event) {
     const target = (event.target as HTMLInputElement);
-    const index = parseInt(target.dataset['index'] || '');
+    const value = parseInt(target.value);
     
-    if (!isNaN(parseInt(event.key)) && index < this.inputs.length - 1) {
-      this.inputs[index + 1].focus()
-    } else if (event.code === 'Backspace' && target.value === '' && index > 0) {
-      this.inputs[index - 1].focus();
+    if (value < 10) {
+      target.value = `0${value}`;
     }
   }
 
@@ -62,10 +60,10 @@ export default class SettingsComponent {
 
     this.timer.stopTimer();
 
-    if (this.inputs.length === 6) {
-      const hours = `${this.inputs[0].value}${this.inputs[1].value}`;
-      const minutes = `${this.inputs[2].value}${this.inputs[3].value}`;
-      const seconds = `${this.inputs[4].value}${this.inputs[5].value}`;
+    if (this.inputs.length === 3) {
+      const hours = this.inputs[0].value;
+      const minutes = this.inputs[1].value;
+      const seconds = this.inputs[2].value;
       const hideZeroedUnits = this.form.querySelector('[name="hideZeroedUnits"') as HTMLInputElement;
 
       this.timer.setTimer(parseInt(hours), parseInt(minutes), parseInt(seconds), hideZeroedUnits.checked);

@@ -109,6 +109,9 @@ select {
 }
 
 button {
+  display: flex;
+  padding: $padding-small;
+
   border: none;
 
   background-color: transparent;
@@ -283,7 +286,7 @@ main {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: $font-size-xxl;
+      width: calc(2 * $font-size-xxl);
       height: $font-size-xxl;
       padding-left: $padding-small;
     }

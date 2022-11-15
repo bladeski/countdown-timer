@@ -20,14 +20,11 @@ html(lang="en-GB")
     form#Settings
       div Countdown Timer Length 
       div.timer-values
-        input.timer-input-value(data-index="0" placeholder="h" type="number" min="0" max="9" required)
-        input.timer-input-value(data-index="1" placeholder="h" type="number" min="0" max="9" required)
+        input.timer-input-value(data-index="0" placeholder="hh" required type="number" min="0" max="23")
         span :
-        input.timer-input-value(data-index="2" placeholder="m" type="number" min="0" max="5" required)
-        input.timer-input-value(data-index="3" placeholder="m" type="number" min="0" max="9" required)
+        input.timer-input-value(data-index="2" placeholder="mm" required type="number" min="0" max="59")
         span :
-        input.timer-input-value(data-index="4" placeholder="s" type="number" min="0" max="5" required)
-        input.timer-input-value(data-index="5" placeholder="s" type="number" min="0" max="9" required)
+        input.timer-input-value(data-index="2" placeholder="ss" required type="number" min="0" max="59")
       label Hide 'zeroed' units?
         input(name="hideZeroedUnits" type="checkbox" checked)
       button#UpdateButton(type=submit aria-disabled="true").material-symbols-rounded
