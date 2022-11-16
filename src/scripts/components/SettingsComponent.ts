@@ -21,7 +21,11 @@ export default class SettingsComponent {
 
     this.inputs.forEach((input) => {
       input.addEventListener('input', this.onInputUpdate.bind(this));
+      input.addEventListener('blur', this.onInputBlur.bind(this));
     });
+
+    const themeColourInput = this.form.querySelector('[name="themeColour"]') as HTMLInputElement;
+    themeColourInput.addEventListener('input', this.setThemeColour.bind(this));
 
     this.form.addEventListener('input', (event: Event) => {
       const updateButton = document.getElementById(
@@ -41,10 +45,17 @@ export default class SettingsComponent {
   private toggleSettings(open?: boolean) {
     this.showSettings = typeof open === 'boolean' ? open : !this.showSettings;
 
+    const formElements = this.form.querySelectorAll('input, button') as NodeListOf<HTMLInputElement | HTMLButtonElement>;
+    formElements.forEach(item => {
+      item.ariaDisabled = `${!this.showSettings}`;
+      item.disabled = !this.showSettings;
+    });
+
     const settingsPanel = document.getElementById('Settings');
     if (this.showSettings) {
       settingsPanel?.classList.add('show');
-      this.inputs[0].focus();
+      setTimeout(() => this.inputs[0].focus(), 500);
+      this.timer?.stopTimer();
     } else {
       settingsPanel?.classList.remove('show');
       const startStopButton = document.getElementById(
@@ -57,14 +68,19 @@ export default class SettingsComponent {
   private onInputUpdate(event: Event) {
     const target = event.target as HTMLInputElement;
     const enteredValue = parseInt(target.value);
+    const min = parseInt(target.min);
+    const max = parseInt(target.max);
     const value =
-      enteredValue > parseInt(target.max)
-        ? target.max
-        : enteredValue < parseInt(target.min)
-        ? target.min
-        : enteredValue;
+      enteredValue > max ? max : enteredValue < min ? min : enteredValue;
 
-    target.value = `${value < 10 ? '0' : ''}${value}`;
+    target.value = this.formatNumberAsString(value);
+  }
+
+  private onInputBlur(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const enteredValue = parseInt(target.value);
+    const value = isNaN(enteredValue) ? 0 : enteredValue;
+    target.value = this.formatNumberAsString(value);
   }
 
   private onFormSubmit(event: SubmitEvent) {
@@ -77,17 +93,36 @@ export default class SettingsComponent {
       const minutes = this.inputs[1].value;
       const seconds = this.inputs[2].value;
       const hideZeroedUnits = this.form.querySelector(
-        '[name="hideZeroedUnits"'
+        '[name="hideZeroedUnits"]'
+      ) as HTMLInputElement;
+      const cycleTheme = this.form.querySelector(
+        '[name="cycleTheme"]'
       ) as HTMLInputElement;
 
       this.timer.setTimer(
         parseInt(hours),
         parseInt(minutes),
         parseInt(seconds),
-        hideZeroedUnits.checked
+        hideZeroedUnits.checked,
+        cycleTheme.checked
       );
 
       this.toggleSettings();
     }
+  }
+  
+  private setThemeColour(event: Event) {
+    const colour = (event.target as HTMLInputElement).value;
+
+    if (!isNaN(parseInt(colour))) {
+      document.body.style.setProperty('--theme-hue-saturation', `${colour}, 71%`);
+    }
+  }
+
+  private formatNumberAsString(number: number): string {
+    return number.toLocaleString(undefined, {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
   }
 }

@@ -9,6 +9,8 @@ export default class TimerComponent {
   private minutesLeft: number = 0;
   private secondsLeft: number = 0;
   private hideZeroedUnits = false;
+  private cycleTheme = false;
+  private themeColour = 230;
   private openSettings: (open?: boolean) => void;
 
   constructor(openSettings: (open?: boolean) => void) {
@@ -37,7 +39,7 @@ export default class TimerComponent {
       if (this.interval) {
         this.stopTimer();
       } else {
-        this.setTimer(this.hoursLeft, this.minutesLeft, this.secondsLeft, this.hideZeroedUnits);
+        this.setTimer(this.hoursLeft, this.minutesLeft, this.secondsLeft, this.hideZeroedUnits, this.cycleTheme, this.themeColour);
         this.startTimer();
       }
     })
@@ -49,7 +51,7 @@ export default class TimerComponent {
     });
   }
 
-  public setTimer(hours: number, minutes: number = 0, seconds: number = 0, hideZeroedUnits = false) {
+  public setTimer(hours: number, minutes: number = 0, seconds: number = 0, hideZeroedUnits = false, cycleTheme = false, themeColour = 260) {
     if (
       typeof hours !== 'number' ||
       typeof minutes !== 'number' ||
@@ -58,6 +60,8 @@ export default class TimerComponent {
       throw new Error('Hours, minutes and seconds need to be a valid number');
     }
     this.hideZeroedUnits = hideZeroedUnits;
+    this.cycleTheme = cycleTheme;
+    this.themeColour = themeColour;
 
     this.hoursLeft = hours;
     this.minutesLeft = minutes;
@@ -85,8 +89,10 @@ export default class TimerComponent {
     const startStopButton = document.getElementById('StartStop');
     startStopButton?.classList.remove('timer-stopped');
     startStopButton?.classList.add('timer-started');
+    startStopButton?.blur();
 
-    document.body.classList.add('countdown');
+    this.openSettings(false);
+
     this.interval = setInterval(() => {
       this.updateTimer();
     }, 50);
@@ -100,6 +106,7 @@ export default class TimerComponent {
       const startStopButton = document.getElementById('StartStop');
       startStopButton?.classList.add('timer-stopped');
       startStopButton?.classList.remove('timer-started');
+      document.body.classList.remove('pulse');
     }
   }
 
@@ -130,6 +137,7 @@ export default class TimerComponent {
       if (seconds !== this.secondsLeft) {
         this.secondsLeft = seconds;
         this.setTimeUnitValue(this.secondsLeft, TimeUnit.SECONDS);
+        this.updateThemeColour();
       }
       this.setClass();
       
@@ -146,13 +154,19 @@ export default class TimerComponent {
           gravity: 0.5,
           ticks: 300
         })?.then(() => {
-          document.body.classList.remove('countdown');
           this.reset();
         });
         this.stopTimer();
       }
 
       this.setStartStopButtonDisabled();
+    }
+  }
+
+  private updateThemeColour() {
+    if (this.cycleTheme) {
+      this.themeColour = this.themeColour + 2;
+      document.body.style.setProperty('--theme-hue-saturation', `${this.themeColour}, 71%`);
     }
   }
 

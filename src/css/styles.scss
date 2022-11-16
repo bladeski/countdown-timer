@@ -2,6 +2,51 @@
 
 @import './vars.scss';
 
+body {
+  --theme-hue-saturation: 230, 71%;
+  --theme-lightness: 24%;
+  --theme-colour: hsl(var(--theme-hue-saturation), var(--theme-lightness));
+  --primary-font-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 8%));
+  --link-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 20%));
+  --link-visited-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 10%));
+  --background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 74%));
+  --secondary-background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 70%));
+  --tooltip-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 16%));
+
+  @media (prefers-color-scheme: dark) {
+    --theme-lightness: 76%;
+    --theme-colour: hsl(var(--theme-hue-saturation), var(--theme-lightness));
+    --primary-font-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 8%));
+    --link-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 20%));
+    --link-visited-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 10%));
+    --background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 74%));
+    --secondary-background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 70%));
+    --tooltip-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 16%));
+
+    &.light-mode {
+      --theme-lightness: 24%;
+      --theme-colour: hsl(var(--theme-hue-saturation), var(--theme-lightness));
+      --primary-font-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 8%));
+      --link-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 20%));
+      --link-visited-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 10%));
+      --background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 74%));
+      --secondary-background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 70%));
+      --tooltip-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 16%));
+    }
+  }
+
+  &.dark-mode {
+    --theme-lightness: 76%;
+    --theme-colour: hsl(var(--theme-hue-saturation), var(--theme-lightness));
+    --primary-font-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 8%));
+    --link-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 20%));
+    --link-visited-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 10%));
+    --background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 74%));
+    --secondary-background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 70%));
+    --tooltip-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 16%));
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -19,7 +64,7 @@ body,
 input,
 button,
 select {
-  color: $primary-font-colour;
+  color: var(--primary-font-colour);
   font-family: $font-family;
   font-size: $body-font-size;
   font-weight: 400;
@@ -29,28 +74,28 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0;
+  overflow: hidden;
 
-  background-color: $background-colour;
+  background-color: var(--primary-font-colour);
 
+  color: var(--background-colour);
   line-height: 1.5;
   text-align: justify;
 
-  &.countdown {
-    background-color: $primary-font-colour;
-
-    color: $background-colour;
-
-    input,
-    button,
-    select {
-      color: $background-colour;
-    }
-  }
+  accent-color: var(--theme-colour);
 
   &.pulse {
     main {
       animation: pulse-animation 1s infinite;
     }
+  }
+
+  button {
+    color: var(--background-colour);
+  }
+
+  #Settings {
+    color: var(--primary-font-colour);
   }
 }
 
@@ -98,7 +143,7 @@ textarea,
 select {
   margin: 0;
 
-  border: 1px solid $primary-font-colour;
+  border: 1px solid var(--primary-font-colour);
   border-radius: $border-radius;
 }
 
@@ -249,17 +294,20 @@ main {
 }
 
 #Settings {
-  display: none;
+  display: flex;
   position: absolute;
-  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  padding: $padding-standard;
+  transform: translateY(100%);
 
-  background-color: $background-colour;
+  background-color: var(--background-colour);
+
+  transition: all $default-transition;
 
   gap: $padding-standard;
 
@@ -270,7 +318,7 @@ main {
   }
 
   &.show {
-    display: flex;
+    transform: translateY(0);
   }
 
   label {
@@ -285,7 +333,7 @@ main {
     input,
     span {
       font-family: $timer-font-family;
-      font-size: $font-size-xl;
+      font-size: $font-size-l;
       text-align: center;
     }
 
@@ -293,8 +341,8 @@ main {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: calc(2 * $font-size-xxl);
-      height: $font-size-xxl;
+      width: calc(2 * $font-size-xl);
+      height: $font-size-xl;
       padding-left: $padding-small;
     }
   }
@@ -340,10 +388,10 @@ main {
 
 @keyframes pulse-animation {
   0% {
-    box-shadow: inset 0 0 10px 10px $theme-colour;
+    box-shadow: inset 0 0 10px 10px var(--theme-colour);
   }
 
   100% {
-    box-shadow: inset 0 0 10px 10px transparentize($color: $theme-colour, $amount: 1);
+    box-shadow: inset 0 0 10px 10px var(--primary-font-colour);
   }
 }
