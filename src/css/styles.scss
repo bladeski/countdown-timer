@@ -202,8 +202,6 @@ button {
     right: $padding-standard;
 
     font-size: $font-size-xl;
-
-    z-index: 1;
   }
 }
 
@@ -228,16 +226,12 @@ main {
   transition: font-size $default-transition;
 
   &.seconds {
-    font-size: $font-size-xxxxl;
-
     .second-value {
       opacity: 1;
     }
   }
 
   &.minutes {
-    font-size: $font-size-xxxl;
-
     .minute-value,
     .minute-divider {
       opacity: 1;
@@ -245,8 +239,6 @@ main {
   }
 
   &.hours {
-    font-size: $font-size-xxl;
-
     .hour-value,
     .hour-divider {
       opacity: 1;
@@ -256,6 +248,8 @@ main {
   &.hide-hours {
     grid-template-columns: 1fr 1fr auto 1fr 1fr;
 
+    font-size: $font-size-xxl;
+
     .hour-value,
     .hour-divider {
       display: none;
@@ -264,6 +258,8 @@ main {
 
   &.hide-minutes {
     grid-template-columns: 1fr 1fr auto;
+
+    font-size: $font-size-xxxl;
 
     .minute-value,
     .minute-divider {
@@ -352,7 +348,7 @@ main {
   }
 }
 
-@media screen and (min-width: 640px) {
+@media screen and (min-width: 680px) {
   $padding-page-width: 10vw;
 
   header,
@@ -371,6 +367,18 @@ main {
 
   .tag {
     text-align: left;
+  }
+
+  #Timer {
+    font-size: $font-size-xxl;
+
+    &.hide-hours {
+      font-size: $font-size-xxxl;
+    }
+
+    &.hide-minutes {
+      font-size: $font-size-xxxxl;
+    }
   }
 }
 

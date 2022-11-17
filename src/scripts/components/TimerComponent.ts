@@ -39,7 +39,7 @@ export default class TimerComponent {
       if (this.interval) {
         this.stopTimer();
       } else {
-        this.setTimer(this.hoursLeft, this.minutesLeft, this.secondsLeft, this.hideZeroedUnits, this.cycleTheme, this.themeColour);
+        this.setTimer([this.hoursLeft, this.minutesLeft, this.secondsLeft], this.hideZeroedUnits, this.cycleTheme, this.themeColour);
         this.startTimer();
       }
     })
@@ -51,11 +51,11 @@ export default class TimerComponent {
     });
   }
 
-  public setTimer(hours: number, minutes: number = 0, seconds: number = 0, hideZeroedUnits = false, cycleTheme = false, themeColour = 260) {
+  public setTimer(countdownLength: number[], hideZeroedUnits = false, cycleTheme = false, themeColour = 260) {
     if (
-      typeof hours !== 'number' ||
-      typeof minutes !== 'number' ||
-      typeof seconds !== 'number'
+      typeof countdownLength[0] !== 'number' ||
+      typeof countdownLength[1] !== 'number' ||
+      typeof countdownLength[2] !== 'number'
     ) {
       throw new Error('Hours, minutes and seconds need to be a valid number');
     }
@@ -63,9 +63,9 @@ export default class TimerComponent {
     this.cycleTheme = cycleTheme;
     this.themeColour = themeColour;
 
-    this.hoursLeft = hours;
-    this.minutesLeft = minutes;
-    this.secondsLeft = seconds;
+    this.hoursLeft = countdownLength[0];
+    this.minutesLeft = countdownLength[1];
+    this.secondsLeft = countdownLength[2];
     
     this.setTimeUnitValue(this.hoursLeft, TimeUnit.HOURS);
     this.setTimeUnitValue(this.minutesLeft, TimeUnit.MINUTES);
@@ -116,7 +116,7 @@ export default class TimerComponent {
     this.hoursLeft = 0;
     this.minutesLeft = 0;
     this.secondsLeft = 0;
-    this.setTimer(0, 0, 0, false);
+    this.setTimer([0, 0, 0], false);
     this.openSettings(true);
   }
 

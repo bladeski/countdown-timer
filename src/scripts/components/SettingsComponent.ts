@@ -6,8 +6,18 @@ export default class SettingsComponent {
   private form: HTMLFormElement;
   private inputs: HTMLInputElement[] = [];
   private timer: TimerComponent;
+  private _currentSettings: SettingsModel = defaultSettings;
+
+  private get currentSettings() {
+    return this._currentSettings;
+  }
+
+  private set currentSettings(settings: SettingsModel) {
+    this._currentSettings = settings;
+  }
 
   constructor() {
+    this.loadSettings();
     this.settingsButton = document.getElementById(
       'SettingsButton'
     ) as HTMLButtonElement;
@@ -19,9 +29,11 @@ export default class SettingsComponent {
       .querySelectorAll('input.timer-input-value')
       .forEach((input) => this.inputs.push(input as HTMLInputElement));
 
-    this.inputs.forEach((input) => {
+    this.inputs.forEach((input, index) => {
       input.addEventListener('input', this.onInputUpdate.bind(this));
       input.addEventListener('blur', this.onInputBlur.bind(this));
+      input.value = this.currentSettings.countdownLength &&
+        this.formatNumberAsString(this.currentSettings.countdownLength[index]) || '00';
     });
 
     const themeColourInput = this.form.querySelector('[name="themeColour"]') as HTMLInputElement;
@@ -98,24 +110,37 @@ export default class SettingsComponent {
       const cycleTheme = this.form.querySelector(
         '[name="cycleTheme"]'
       ) as HTMLInputElement;
+      const countdownLength = [parseInt(hours),
+        parseInt(minutes),
+        parseInt(seconds)];
 
       this.timer.setTimer(
-        parseInt(hours),
-        parseInt(minutes),
-        parseInt(seconds),
+        countdownLength,
         hideZeroedUnits.checked,
         cycleTheme.checked
       );
+
+      const currentSettings = {
+        ...this.currentSettings,
+        countdownLength,
+        hideZeroedUnits: hideZeroedUnits.checked,
+        cycleThemeColour: cycleTheme.checked
+      }
+
+      this.saveSettings(currentSettings);
 
       this.toggleSettings();
     }
   }
   
   private setThemeColour(event: Event) {
-    const colour = (event.target as HTMLInputElement).value;
+    const colour = parseInt((event.target as HTMLInputElement).value);
 
-    if (!isNaN(parseInt(colour))) {
+    if (!isNaN(colour)) {
       document.body.style.setProperty('--theme-hue-saturation', `${colour}, 71%`);
+      this.saveSettings({
+        themeColour: colour
+      });
     }
   }
 
@@ -125,4 +150,37 @@ export default class SettingsComponent {
       useGrouping: false,
     });
   }
+
+  private saveSettings(settings: SettingsModel) {
+    const currentSettings = {
+      ...this.currentSettings,
+      ...settings
+    };
+    this.currentSettings = currentSettings;
+    (Object.keys(currentSettings) as (keyof SettingsModel)[])
+      .forEach((key) => localStorage.setItem(key, JSON.stringify(currentSettings[key])))
+  }
+
+  private loadSettings() {
+    this.currentSettings = {
+      countdownLength: JSON.parse(localStorage.getItem('countdownLength') || JSON.stringify(defaultSettings.countdownLength)),
+      hideZeroedUnits: localStorage.getItem('hideZeroedUnits') !== 'false',
+      themeColour: parseInt(localStorage.getItem('themeColour') || `${defaultSettings.themeColour}`),
+      cycleThemeColour: localStorage.getItem('cycleThemeColour') === 'false'
+    };
+  }
+}
+
+export type SettingsModel = {
+  countdownLength?: number[];
+  hideZeroedUnits?: boolean;
+  themeColour?: number;
+  cycleThemeColour?: boolean;
+}
+
+const defaultSettings: SettingsModel = {
+  countdownLength: [0, 0, 0],
+  hideZeroedUnits: true,
+  themeColour: 260,
+  cycleThemeColour: false
 }

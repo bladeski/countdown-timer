@@ -3,8 +3,6 @@ html(lang="en-GB")
   head
     include templates/head.pug
   main
-    button#SettingsButton.material-symbols-rounded
-      span.settings(aria-label="View timer settings") settings
     div#Timer.hours.minutes.seconds
       span#Hours1.hour-value
       span#Hours2.hour-value
@@ -33,5 +31,7 @@ html(lang="en-GB")
         input(aria-label="Cycle theme colour when countdown timer is running." name="cycleTheme" type="checkbox" aria-disabled="true" disabled)
       button#UpdateButton(aria-label="Save timer settings" type=submit aria-disabled="true" disabled).material-symbols-rounded
         span.update check
+    button#SettingsButton.material-symbols-rounded
+      span.settings(aria-label="View timer settings") settings
     
   script(src="./scripts/index.ts" type="module")
