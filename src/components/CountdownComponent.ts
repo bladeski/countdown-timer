@@ -363,7 +363,7 @@ export class CountdownComponent extends HTMLElement {
           font-size: var(--font-size-xxl);
         }
 
-        .countdown-timer. hide-hours .time-container {
+        .countdown-timer.hide-hours .time-container {
           font-size: var(--font-size-xxxl);
         }
 
