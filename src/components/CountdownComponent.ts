@@ -9,8 +9,6 @@ export class CountdownComponent extends HTMLElement {
   private minutesLeft: number = 0;
   private secondsLeft: number = 0;
   private hideZeroedUnits = false;
-  private cycleTheme = false;
-  private themeColour = 230;
 
   constructor() {
     super();
@@ -50,7 +48,7 @@ export class CountdownComponent extends HTMLElement {
         if (this.interval) {
           this.stopCountdown();
         } else {
-          this.setCountdownLength([this.hoursLeft, this.minutesLeft, this.secondsLeft], this.hideZeroedUnits, this.cycleTheme, this.themeColour);
+          this.setCountdownLength([this.hoursLeft, this.minutesLeft, this.secondsLeft], this.hideZeroedUnits);
           this.startCountdown();
         }
       });
@@ -62,7 +60,7 @@ export class CountdownComponent extends HTMLElement {
     shadow.appendChild(this.countdownContainer);
   }
 
-  public setCountdownLength(countdownLength: number[], hideZeroedUnits = false, cycleTheme = false, themeColour = 260) {
+  public setCountdownLength(countdownLength: number[], hideZeroedUnits = false) {
     if (
       typeof countdownLength[0] !== 'number' ||
       typeof countdownLength[1] !== 'number' ||
@@ -71,8 +69,6 @@ export class CountdownComponent extends HTMLElement {
       throw new Error('Hours, minutes and seconds need to be a valid number');
     }
     this.hideZeroedUnits = hideZeroedUnits;
-    this.cycleTheme = cycleTheme;
-    this.themeColour = themeColour;
 
     this.hoursLeft = countdownLength[0];
     this.minutesLeft = countdownLength[1];

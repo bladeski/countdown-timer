@@ -1,11 +1,95 @@
-# Countdown
+# Countdown Timer
 
 ## About
 
-This is a lightweight, accessible and customisable countdown timer application built with TypeScript and SASS and packaged with ParcelJS.
+This is a lightweight, accessible and customisable countdown timer web component built with TypeScript and packaged with ParcelJS.
 
 ## Getting Started
 
-To get started, make sure you have [Yarn installed globally](https://classic.yarnpkg.com/en/docs/install), clone the repo, run `yarn i` to install and `yarn start` to run locally. Then simply browse to [http://localhost:1236](http://localhost:1236).
+To get started, install this into your project using:
 
-To view a demo, check out [https://bladeski.github.io/countdown-timer/](https://bladeski.github.io/countdown-timer/)
+`npm install @bladeski/countdown-timer`
+
+or
+
+`yarn add @bladeski/countdown-timer`.
+
+Once installed, simply import into your project using `import '@bladeski/countdown-timer'`, then add the following tag into your HTML `<countdown-component></countdown-component>`.
+
+To access the component methods, events, etc. simply find it in the DOM as below:
+
+```js
+  const countdownComponent = document.querySelector('countdown-component');
+  countdownComponent.setCountdownLength([0,0,30]);
+  countdownComponent.startCountdown();
+```
+
+### TypeScript
+
+When using TypeScript, use the `CountdownComponent` cast to the correct type using:
+
+```ts
+const countdownComponent = document.querySelector('countdown-component') as CountdownComponent;
+```
+
+## API
+
+### Methods
+
+``` ts
+  setCountdownLength(countdownLength: number[], hideZeroedUnits = false);
+```
+
+``` ts
+  startCountdown();
+```
+
+``` ts
+  stopCountdown();
+```
+
+``` ts
+  reset();
+```
+
+### Events
+
+#### Countdown Start
+
+Triggered when the countdown has started.
+
+Example
+
+``` ts
+  countdownComponent.addEventListener('countdownStart', () => console.log('Countdown Started'));
+```
+
+#### Countdown Stop
+
+Triggered when the countdown has stopped.
+
+Example
+
+``` ts
+  countdownComponent.addEventListener('countdownStop', () => console.log('Countdown Stopped'));
+```
+
+#### Countdown End
+
+Triggered when the countdown has reached 00:00:00.
+
+Example
+
+``` ts
+  countdownComponent.addEventListener('countdownEnd', () => console.log('Countdown Ended'));
+```
+
+#### Countdown Reset
+
+Triggered when the countdown has been reset.
+
+Example
+
+``` ts
+  countdownComponent.addEventListener('countdownReset', () => console.log('Countdown Reset'));
+```
