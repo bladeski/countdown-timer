@@ -11,5 +11,5 @@
     "moduleResolution": "Node",
     "target": "ES6"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "example/scripts/index.ts", "example/scripts/SettingsComponent.ts"],
 }
