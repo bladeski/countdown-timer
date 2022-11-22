@@ -256,22 +256,12 @@ export class CountdownComponent extends HTMLElement {
 
         --default-transition: 250ms ease-in-out;
 
-        --theme-hue-saturation: 230, 71%;
-        --theme-lightness: 24%;
-        --theme-colour: hsl(var(--theme-hue-saturation), var(--theme-lightness));
-        --link-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 20%));
-        --link-visited-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 10%));
-        --primary-font-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 74%));
-        --background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 8%));
-        --secondary-background-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) + 70%));
-        --tooltip-colour: hsl(var(--theme-hue-saturation), calc(var(--theme-lightness) - 16%));
+        --primary-font-colour: #fcfcfc;
 
         font-size: var(--body-font-regular);
-        background-color: var(--background-colour);
         color: var(--primary-font-colour);
         line-height: 1.5;
         text-align: justify;
-        accent-color: var(--theme-colour);
       }
 
       button {
@@ -295,7 +285,7 @@ export class CountdownComponent extends HTMLElement {
         box-sizing: border-box;
         height: 74px;        
         border-color: transparent transparent transparent var(--primary-font-colour);
-        transition: 100ms all ease;
+        transition: border-style 100ms ease-in-out, border-width 100ms ease-in-out, opacity var(--default-transition);
         will-change: border-width;
         cursor: pointer;
         border-style: solid;
