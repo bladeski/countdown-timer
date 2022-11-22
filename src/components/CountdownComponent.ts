@@ -298,7 +298,7 @@ export class CountdownComponent extends HTMLElement {
         justify-content: center;
       }
 
-      .countdown-timer.hide-hours {
+      .countdown-timer.hide-hours .time-container {
         grid-template-columns: 1fr 1fr auto 1fr 1fr;
         font-size: var(--font-size-xxl);
       }
@@ -308,7 +308,7 @@ export class CountdownComponent extends HTMLElement {
         display: none;
       }
 
-      .countdown-timer.hide-minutes {
+      .countdown-timer.hide-minutes .time-container {
         grid-template-columns: 1fr 1fr auto;
         font-size: var(--font-size-xxxl);
       }
