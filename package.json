@@ -1,6 +1,6 @@
 {
-  "name": "countdown-timer",
-  "version": "0.3.1",
+  "name": "@bladeski/countdown-timer",
+  "version": "0.3.2",
   "description": "A customised countdown timer.",
   "author": "Jonathan Blades",
   "license": "MIT",
