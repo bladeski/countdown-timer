@@ -1,11 +1,11 @@
 {
   "name": "@bladeski/countdown-timer",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A customised countdown timer.",
   "author": "Jonathan Blades",
   "license": "MIT",
   "source": "src/components/CountdownComponent.ts",
-  "module": "dist/index.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
