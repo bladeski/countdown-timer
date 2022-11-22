@@ -1,6 +1,10 @@
 import { CountdownEventName, TimeInMs, TimeUnit } from '../enums';
 
 export class CountdownComponent extends HTMLElement {
+  public get timeLeft() {
+    return [this.hoursLeft, this.minutesLeft, this.secondsLeft];
+  }
+
   private readonly countdownContainer: HTMLElement;
   private startStopButton: HTMLButtonElement;
   private endTime?: Date;
@@ -43,15 +47,7 @@ export class CountdownComponent extends HTMLElement {
 
     if (startStopButton instanceof Element) {
       this.startStopButton = startStopButton as HTMLButtonElement;
-      this.startStopButton.addEventListener('click', () => {
-        // TODO: Put into method
-        if (this.interval) {
-          this.stopCountdown();
-        } else {
-          this.setCountdownLength([this.hoursLeft, this.minutesLeft, this.secondsLeft], this.hideZeroedUnits);
-          this.startCountdown();
-        }
-      });
+      this.startStopButton.addEventListener('click', this.onStartStopClick.bind(this));
     } else {
       throw new Error('There was a problem configuring the Countdown component.')
     }
@@ -125,6 +121,19 @@ export class CountdownComponent extends HTMLElement {
     this.setCountdownLength([0, 0, 0], false);
     
     this.triggerEvent(CountdownEventName.RESET);
+  }
+
+  public focus() {
+    this.startStopButton.focus();
+  }
+
+  private onStartStopClick() {
+    if (this.interval) {
+      this.stopCountdown();
+    } else {
+      this.setCountdownLength([this.hoursLeft, this.minutesLeft, this.secondsLeft], this.hideZeroedUnits);
+      this.startCountdown();
+    }
   }
 
   private updateCountdown() {

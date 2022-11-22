@@ -34,22 +34,56 @@ const countdownComponent = document.querySelector('countdown-component') as Coun
 
 ## API
 
+### Properties
+
+#### timeLeft
+
+This will return the time left on the timer.
+
+```ts
+  timeLeft: [hoursLeft: number, minutesLeft: number, secondsLeft: number]
+```
+
 ### Methods
+
+#### setCountdownLength
+
+Overrides the default focus method and focusses the start/stop button.
 
 ``` ts
   setCountdownLength(countdownLength: number[], hideZeroedUnits = false);
 ```
 
+#### startCountdown
+
+Overrides the default focus method and focusses the start/stop buttonStarts the countdown.
+
 ``` ts
   startCountdown();
 ```
+
+#### stopCountdown
+
+Stops/pauses the countdown.
 
 ``` ts
   stopCountdown();
 ```
 
+#### reset
+
+Resets the countdown timer.
+
 ``` ts
   reset();
+```
+
+#### focus
+
+Overrides the default focus method and focusses the start/stop button.
+
+``` ts
+  focus();
 ```
 
 ### Events
