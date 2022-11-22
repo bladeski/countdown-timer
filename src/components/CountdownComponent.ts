@@ -111,7 +111,6 @@ export class CountdownComponent extends HTMLElement {
 
       this.startStopButton?.classList.add('countdown-stopped');
       this.startStopButton?.classList.remove('countdown-started');
-      document.body.classList.remove('pulse');
       
       this.triggerEvent(CountdownEventName.STOP);
     }
@@ -147,13 +146,8 @@ export class CountdownComponent extends HTMLElement {
         this.setTimeUnitValue(this.secondsLeft, TimeUnit.SECONDS);
       }
       this.setClass();
-      
-      if (hours <= 0 && minutes <= 0 && seconds <= 10) {
-        document.body.classList.add('pulse');
-      }
 
       if (hours <= 0 && minutes <= 0 && seconds <= 0) {
-        document.body.classList.remove('pulse');
         this.interval && this.triggerEvent(CountdownEventName.END);
         this.stopCountdown();
       }
@@ -304,6 +298,26 @@ export class CountdownComponent extends HTMLElement {
         justify-content: center;
       }
 
+      .countdown-timer.hide-hours {
+        grid-template-columns: 1fr 1fr auto 1fr 1fr;
+        font-size: var(--font-size-xxl);
+      }
+
+      .countdown-timer.hide-hours .hour-value,
+      .countdown-timer.hide-hours .hour-divider {
+        display: none;
+      }
+
+      .countdown-timer.hide-minutes {
+        grid-template-columns: 1fr 1fr auto;
+        font-size: var(--font-size-xxxl);
+      }
+
+      .countdown-timer.hide-minutes .minute-value,
+      .countdown-timer.hide-minutes .minute-divider {
+        display: none;
+      }
+
       .time-container {
         display: grid;
         grid-template-columns: 1fr 1fr repeat(2, auto 1fr 1fr);
@@ -321,26 +335,6 @@ export class CountdownComponent extends HTMLElement {
       .time-container.minutes .minute-divider,
       .time-container.seconds .second-value {
         opacity: 1;
-      }
-
-      .time-container.hide-hours {
-        grid-template-columns: 1fr 1fr auto 1fr 1fr;
-        font-size: var(--font-size-xxl);
-      }
-
-      .time-container.hide-hours .hour-value,
-      .time-container.hide-hours .hour-divider {
-        display: none;
-      }
-
-      .time-container.hide-minutes {
-        grid-template-columns: 1fr 1fr auto;
-        font-size: var(--font-size-xxxl);
-      }
-
-      .time-container.hide-minutes .minute-value,
-      .time-container.hide-minutes .minute-divider {
-        display: none;
       }
 
       .hour-value,
