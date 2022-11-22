@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Build and publish to NPM
 
 on:
   # Runs on pushes targeting the default branch
@@ -47,18 +47,10 @@ jobs:
           tag-prefix: 'v'
           commit-message: 'CI: bumps version to {{version}} [skip ci]'
       
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
-        
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - name: NPM Publish
+        uses: JS-DevTools/npm-publish@v1
         with:
-          # Upload entire repository
-          path: './dist/'
-          
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+          token: ${{ secrets.NPM_TOKEN }}
 
       - name: Create Release
         uses: ncipollo/release-action@v1.11.1
