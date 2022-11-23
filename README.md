@@ -48,7 +48,7 @@ This will return the time left on the timer.
 
 #### setCountdownLength
 
-Overrides the default focus method and focusses the start/stop button.
+Sets the length of the countdown timer.
 
 ``` ts
   setCountdownLength(countdownLength: number[], hideZeroedUnits = false);
@@ -56,7 +56,7 @@ Overrides the default focus method and focusses the start/stop button.
 
 #### startCountdown
 
-Overrides the default focus method and focusses the start/stop buttonStarts the countdown.
+Starts the countdown.
 
 ``` ts
   startCountdown();
