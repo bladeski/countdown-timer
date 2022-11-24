@@ -4,6 +4,8 @@
 
 This is a lightweight, accessible and customisable countdown timer web component built with TypeScript and packaged with ParcelJS.
 
+A [demo is available here](https://bladeski.github.io/countdown-timer-example/)
+
 ## Getting Started
 
 To get started, install this into your project using:
