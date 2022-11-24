@@ -1,9 +1,15 @@
 {
   "name": "@bladeski/countdown-timer",
   "version": "2.0.1",
-  "description": "A customised countdown timer.",
+  "description": "This is a lightweight, accessible and customisable countdown timer web component built with TypeScript and packaged with ParcelJS.",
   "author": "Jonathan Blades",
   "license": "MIT",
+  "keywords": [
+    "web component",
+    "countdown",
+    "timer",
+    "TypeScript"
+  ],
   "source": "src/components/CountdownComponent.ts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
