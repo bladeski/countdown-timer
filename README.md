@@ -34,6 +34,12 @@ const countdownComponent = document.querySelector('countdown-component') as Coun
 
 ## API
 
+### Data-Attributes
+
+#### data-base-font-size
+
+Pass this data attribute into the web component with a number value to set the base font size.
+
 ### Properties
 
 #### timeLeft
