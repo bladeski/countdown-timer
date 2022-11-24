@@ -89,9 +89,9 @@ export class CountdownComponent extends HTMLElement {
 
     this.setTimeValue();
 
-    this.startStopButton?.classList.remove('countdown-stopped');
-    this.startStopButton?.classList.add('countdown-started');
-    this.startStopButton?.blur();
+    this.startStopButton.classList.remove('countdown-stopped');
+    this.startStopButton.classList.add('countdown-started');
+    this.startStopButton.blur();
 
     this.triggerEvent(CountdownEventName.START);
 
@@ -105,8 +105,8 @@ export class CountdownComponent extends HTMLElement {
       clearInterval(this.interval);
       this.interval = undefined;
 
-      this.startStopButton?.classList.add('countdown-stopped');
-      this.startStopButton?.classList.remove('countdown-started');
+      this.startStopButton.classList.add('countdown-stopped');
+      this.startStopButton.classList.remove('countdown-started');
       
       this.triggerEvent(CountdownEventName.STOP);
     }
@@ -124,7 +124,7 @@ export class CountdownComponent extends HTMLElement {
   }
 
   public focus() {
-    this.startStopButton.focus();
+    this.startStopButton.focus();    
   }
 
   private onStartStopClick() {
