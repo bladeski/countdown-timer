@@ -22,8 +22,10 @@ export class CountdownComponent extends HTMLElement {
     this.countdownContainer = document.createElement('div');
     this.countdownContainer.classList.add('countdown-timer');
 
+    const baseFontSize = parseInt(this.getAttribute('data-base-font-size') || '');
+
     this.countdownContainer.innerHTML = `
-      <style>${this.getStyles()}</style>
+      <style>${this.getStyles(isNaN(baseFontSize) ? undefined : baseFontSize)}</style>
       <div class="time-container hours minutes seconds">
         <span class="hour-value"></span>
         <span class="hour-value"></span>
@@ -242,16 +244,15 @@ export class CountdownComponent extends HTMLElement {
     this.dispatchEvent(event);
   }
 
-  private getStyles() {
+  private getStyles(baseFontSize: number = 28) {
     return `
       :host {
-        --body-font-size: 28px;
-        --font-size-regular: 1rem;
-        --font-size-l: 1.5rem;
-        --font-size-xl: 2.25rem;
-        --font-size-xxl: 3.375rem;
-        --font-size-xxxl: 5.063rem;
-        --font-size-xxxxl: 7.594rem;
+        --body-font-size: ${baseFontSize}px;
+        --font-size-l: 1.5em;
+        --font-size-xl: 2.25em;
+        --font-size-xxl: 3.375em;
+        --font-size-xxxl: 5.063em;
+        --font-size-xxxxl: 7.594em;
 
         --padding-small: 0.5rem;
         --padding-regular: 1rem;
@@ -261,7 +262,7 @@ export class CountdownComponent extends HTMLElement {
 
         --primary-font-colour: #fcfcfc;
 
-        font-size: var(--body-font-regular);
+        font-size: var(--body-font-size);
         color: var(--primary-font-colour);
         line-height: 1.5;
         text-align: justify;
@@ -286,18 +287,18 @@ export class CountdownComponent extends HTMLElement {
       #StartStopButton {
         padding: 0;
         box-sizing: border-box;
-        height: 74px;        
+        height: calc(3 * var(--body-font-size));        
         border-color: transparent transparent transparent var(--primary-font-colour);
         transition: border-style 100ms ease-in-out, border-width 100ms ease-in-out, opacity var(--default-transition);
         will-change: border-width;
         cursor: pointer;
         border-style: solid;
-        border-width: 37px 0 37px 60px;
+        border-width: calc(1.5 * var(--body-font-size)) 0 calc(1.5 * var(--body-font-size)) calc(2.5*var(--body-font-size));
       }
 
       #StartStopButton.countdown-started {
         border-style: double;
-        border-width: 0px 0 0px 60px;
+        border-width: 0px 0 0px calc(2.5*var(--body-font-size));
       }
 
       .countdown-timer {
