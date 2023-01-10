@@ -1,1 +1,17 @@
-titleOnly: true
+titleAndCommits: true
+types: # default: feat | fix | docs | style | refactor | perf | test | build | ci | chore | revert
+  - feat
+  - fix
+  - bump
+  - style
+  - docs
+  - refactor
+  - perf
+  - test
+  - build
+  - ci
+  - chore
+  - revert
+  - major
+  - minor
+  - release
