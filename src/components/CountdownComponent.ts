@@ -246,6 +246,8 @@ export class CountdownComponent extends HTMLElement {
 
   private getStyles(baseFontSize: number = 28) {
     return `
+      @import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+
       :host {
         --body-font-size: ${baseFontSize}px;
         --font-size-l: 1.5em;
