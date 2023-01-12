@@ -19,6 +19,15 @@ export class CountdownComponent extends HTMLElement {
     
     const shadow = this.attachShadow({ mode: 'open' });
 
+    if (this.shadowRoot) {
+      this.shadowRoot.innerHTML = `
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+        <span class="mdi mdi-home"></span>
+      `;
+    }
+
     this.countdownContainer = document.createElement('div');
     this.countdownContainer.classList.add('countdown-timer');
 
@@ -56,6 +65,13 @@ export class CountdownComponent extends HTMLElement {
 
     this.reset();
     shadow.appendChild(this.countdownContainer);
+  }
+
+  connectedCallback() {
+    this.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+      </style>`
   }
 
   public setCountdownLength(countdownLength: number[], hideZeroedUnits = false) {
@@ -246,8 +262,6 @@ export class CountdownComponent extends HTMLElement {
 
   private getStyles(baseFontSize: number = 28) {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
-
       :host {
         --body-font-size: ${baseFontSize}px;
         --font-size-l: 1.5em;
