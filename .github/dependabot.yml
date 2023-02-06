@@ -12,3 +12,5 @@ updates:
     commit-message:
       # Prefix all commit messages with "npm"
       prefix: "fix"
+    reviewers:
+      - "bladeski"
