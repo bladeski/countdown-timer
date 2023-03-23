@@ -7,6 +7,7 @@ export class CountdownComponent extends HTMLElement {
 
   private readonly countdownContainer: HTMLElement;
   private startStopButton: HTMLButtonElement;
+  private isDuration = true;
   private endTime?: Date;
   private interval?: number;
   private hoursLeft: number = 0;
@@ -82,6 +83,8 @@ export class CountdownComponent extends HTMLElement {
     ) {
       throw new Error('Hours, minutes and seconds need to be a valid number');
     }
+
+    this.isDuration = true;
     this.hideZeroedUnits = hideZeroedUnits;
 
     this.hoursLeft = countdownLength[0];
@@ -96,13 +99,18 @@ export class CountdownComponent extends HTMLElement {
     this.setClass();
   }
 
+  public setCountdownEndTime(endTime: Date) {
+    this.isDuration = false;
+    this.endTime = endTime;
+  }
+
   public startCountdown() {
     const countdownInMs =
       this.hoursLeft * TimeInMs.HOURS +
       this.minutesLeft * TimeInMs.MINUTES +
       this.secondsLeft * TimeInMs.SECONDS;
     
-    this.endTime = new Date();
+    this.endTime = this.isDuration || !this.endTime ? new Date() : this.endTime;
     this.endTime.setTime(this.endTime.getTime() + countdownInMs + TimeInMs.SECONDS);
 
     this.setTimeValue();
@@ -148,8 +156,10 @@ export class CountdownComponent extends HTMLElement {
   private onStartStopClick() {
     if (this.interval) {
       this.stopCountdown();
-    } else {
+    } else if (this.isDuration) {
       this.setCountdownLength([this.hoursLeft, this.minutesLeft, this.secondsLeft], this.hideZeroedUnits);
+      this.startCountdown();
+    } else {
       this.startCountdown();
     }
   }
